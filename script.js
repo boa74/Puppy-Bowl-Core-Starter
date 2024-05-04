@@ -1,9 +1,10 @@
 // Use the API_URL variable to make fetch requests to the API.
 // Replace the placeholder with your cohort name (ex: 2109-UNF-HY-WEB-PT)
-const cohortName = "YOUR COHORT NAME HERE";
+//const cohortName = "YOUR COHORT NAME HERE";
 const API_URL = "https://fsa-puppy-bowl.herokuapp.com/api/2404-ftb-et-web-ft/players";
-const wrapper = document.getElementById("wrapper");
-
+const playerBox = document.getElementById("playerBox");
+const description1= document.createElement("description1");  
+const newPlayerForm = document.getElementById("newPlayerForm");
 /**
  * Fetches all players from the API.
  * @returns {Object[]} the array of player objects
@@ -125,19 +126,57 @@ const renderAllPlayers = () => {
 // //  * will call `renderAllPlayers` to re-render the full list of players.
 // //  * @param {Object} player an object representing a single player
 // //  */
+
 const renderSinglePlayer = (player) => {
   // TODO
-  
+  //make a division in body and make it as a box to contain name,img
    const ele = document.createElement("div");
+   ele.style.margin="10px";
+   ele.style.border="1px solid";
+   ele.style.justifyContent="space-evenly";
+
+  //input the info and img and append them in the playerBox
    const playerEle = document.createElement("h3");
+   const idEle= document.createElement("h5");
    const imgEle = document.createElement("img");
    imgEle.setAttribute("src", player.imageUrl);
    imgEle.setAttribute("alt", player.name);
    playerEle.innerHTML=player.name;
+   idEle.innerHTML=player.id;
+   
+   
    ele.appendChild(playerEle);
+   ele.appendChild(idEle);
    ele.appendChild(imgEle);
-   wrapper.appendChild(ele);
+   playerBox.appendChild(ele);
+   
+
+   ele.addEventListener("click",()=>{
+    
+    fetchSinglePlayer(player).then((response)=>{
+      playerBox.innerHTML = "";
+      //wrapper.innerHTML="";
+      renderSinglePlayer(player);
+  
+      description1.innerHTML="NAME: "+player.name+"  /   "+"ID: "+player.id+"  /   "+"BREED: "+player.breed+"  /   "+"TEAM ID: "+player.teamId;
+      playerBox.appendChild(description1);
+
+    })
+   }) 
+  
+
   };
+
+
+ document.getElementById("home").addEventListener("click",()=>{
+    console.log("home Button");
+
+      playerBox.innerHTML = "";
+      renderAllPlayers();
+     
+
+  })
+
 
 
 // // /**
@@ -214,3 +253,4 @@ if (typeof window === "undefined") {
 } else {
   init();
 }
+
